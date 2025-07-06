@@ -51,13 +51,6 @@ class NotificationService extends UnifiedPushFunctions {
     } on Exception catch (_) {
       debugPrint("Exception while granting permissions");
     }
-    UnifiedPush.tryUseCurrentOrDefaultDistributor().then((success) {
-      if (success) {
-        UnifiedPush.register(
-          instance: instanceName,
-        );
-      }
-    });
   }
 
   Future<void> unregister() => UnifiedPush.unregister(instanceName);
@@ -113,8 +106,6 @@ class NotificationService extends UnifiedPushFunctions {
     PushMessage message,
     String instance,
   ) async {
-    debugPrint("instance $instance");
-    debugPrint("onNotification");
     var payload = utf8.decode(message.content);
 
     String title = 'KitchenOwl'; // Default title
@@ -130,7 +121,6 @@ class NotificationService extends UnifiedPushFunctions {
       body = payload.isNotEmpty ? payload : 'Empty message';
     }
 
-    debugPrint(title);
     if (!_notificationInitialized) _initNotifications();
 
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
